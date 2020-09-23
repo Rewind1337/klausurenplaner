@@ -1,0 +1,16 @@
+<svg width="512" height="400" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="514" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="250" id="svg_2" y="282.62337" x="38.9001" stroke-width="0" stroke="#fff" fill="#fff">bws</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="76" id="svg_1" y="102.09836" x="92.52513" stroke-width="0" stroke="#fff" fill="#999">Hofheim</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="248" id="svg_3" y="241.14838" x="39.9001" stroke-width="0" stroke="#fff" fill="#fff">l</text>
+  <rect id="svg_5" height="64" width="64" y="328.74827" x="54.92524" stroke-width="4" stroke="#ffffff" fill="#961900"/>
+  <rect id="svg_6" height="64" width="64" y="328.74828" x="154.52489" stroke-width="4" stroke="#ffffff" fill="#7c7c7c"/>
+  <rect id="svg_7" height="64" width="64" y="329.27328" x="250.97448" stroke-width="4" stroke="#ffffff" fill="#3756b2"/>
+ </g>
+</svg>
