@@ -12,15 +12,18 @@ const ImportForm = (props) => {
   const [selected, setSelected] = useState("");
 
   const uploadInvoice = (invoiceFile) => {
-    let data = invoiceFile.substring(invoiceFile.indexOf("base64,") + 11);
-
+    let data = invoiceFile.substring(invoiceFile.indexOf("base64,") + 7);
     data = window.atob(data);
-
     let parsedInvoiceFile = [];
-
-    csv()
+    csv({
+      delimiter: ";",
+      escape: "auto",
+      quote: "off",
+      eol: "\r\n",
+    })
       .fromString(data)
       .then((json) => {
+        console.log(json);
         if (selected === "users") {
         } else if (selected === "exams") {
           for (let j in json) {
@@ -128,15 +131,12 @@ const ImportForm = (props) => {
               <div className="p-col-12 p-mt-2">
                 <FileUpload
                   className="w-100"
-                  name="demo"
                   chooseLabel="Datei wählen"
-                  uploadLabel="Datei hochladen"
+                  uploadLabel="Dateien hochladen"
                   cancelLabel="Abbrechen"
                   accept=".csv"
                   customUpload={true}
                   uploadHandler={invoiceUploadHandler}
-                  mode="basic"
-                  auto
                 ></FileUpload>
               </div>
             )}

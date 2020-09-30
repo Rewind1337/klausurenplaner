@@ -10,18 +10,27 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
 const Table = (props) => {
-  const [displayMode, setDisplayMode] = useState("default");
   const [dropDownSelected, setDropDownSelected] = useState("exams");
   const [dropDownSelection, setDropDownSelection] = useState([
     { label: "Arbeiten", value: "exams" },
-    { label: "Schüler", value: "users" },
+    { label: "Benutzer", value: "users" },
     { label: "Klassen", value: "classgrades" },
+    { label: "Nutzerrollen", value: "userroles" },
+  ]);
+
+  const [amountRows, setAmountRows] = useState("25");
+  const [amountRowsOptions, setAmountRowsOptions] = useState([
+    { label: "10 pro Seite", value: "10" },
+    { label: "25 pro Seite", value: "25" },
+    { label: "50 pro Seite", value: "50" },
+    { label: "100 pro Seite", value: "100" },
+    { label: "250 pro Seite", value: "250" },
+    { label: "500 pro Seite", value: "500" },
   ]);
 
   const [firstDefault, setFirstDefault] = useState(0);
-  const [firstSingleClass, setFirstSingleClass] = useState(0);
 
-  const [tableColumns, setTableColuns] = useState([
+  const [tableColumns, setTableColumns] = useState([
     { field: "date", header: "Datum" },
     { field: "classgrade", header: "Klasse" },
     { field: "teacher", header: "Lehrkraft" },
@@ -29,19 +38,55 @@ const Table = (props) => {
     { field: "description", header: "Information" },
   ]);
 
+  const [dynamicColumns, setDynamicColumns] = useState([]);
+
   const [update, setUpdate] = useState(false);
 
-  var dt;
+  useEffect(() => {
+    let temp = [...tableColumns];
+    let temp2 = temp.map((col) => {
+      return <Column key={col.field} field={col.field} header={col.header} />;
+    });
+    temp2.push(
+      <Column
+        className="hide-print"
+        key={"actionsColumn"}
+        body={dateTemplate}
+        field={"actions"}
+        header={"Aktionen"}
+      />
+    );
 
-  const exportCSV = () => {
-    let x = dt.exportCSV();
-    console.log(x);
-  };
+    setDynamicColumns(temp2);
+  }, [setTableColumns]);
 
   const updateDisplay = (e) => {
     setDropDownSelected(e);
     if (e === "exams") {
+      setTableColumns([
+        { field: "date", header: "Datum" },
+        { field: "classgrade", header: "Klasse" },
+        { field: "teacher", header: "Lehrkraft" },
+        { field: "topic", header: "Schulfach" },
+        { field: "description", header: "Information" },
+      ]);
+    } else if (e === "users") {
+      setTableColumns([
+        { field: "firstname", header: "Vorname" },
+        { field: "lastname", header: "Nachname" },
+        { field: "username", header: "Benutzername" },
+        { field: "userrole", header: "Nutzerrolle" },
+      ]);
+    } else if (e === "userroles") {
+      setTableColumns([
+        { field: "id", header: "ID" },
+        { field: "name", header: "Bezeichnung" },
+      ]);
     }
+  };
+
+  const exportCSV = () => {
+    dt.exportCSV();
   };
 
   const dateTemplate = (rowData, column) => {
@@ -81,19 +126,7 @@ const Table = (props) => {
     setUpdate(!update);
   };
 
-  const dynamicColumns = tableColumns.map((col) => {
-    return <Column key={col.field} field={col.field} header={col.header} />;
-  });
-
-  dynamicColumns.push(
-    <Column
-      className="hide-print"
-      key={"actionsColumn"}
-      body={dateTemplate}
-      field={"actions"}
-      header={"Aktionen"}
-    />
-  );
+  var dt;
 
   return (
     <>
@@ -114,7 +147,7 @@ const Table = (props) => {
               updateDisplay(e.value);
             }}
             placeholder="Lehrer auswählen"
-            className="p-mb-1"
+            className="p-mb-1 w-50"
           />
         </div>
         <div
@@ -143,34 +176,34 @@ const Table = (props) => {
             }}
           />
         </div>
-        {displayMode === "default" && (
-          <DataTable
-            ref={(el) => {
-              dt = el;
+        <DataTable
+          ref={(el) => {
+            dt = el;
+          }}
+          paginator
+          rows={parseInt(amountRows)}
+          value={props.fetchedData}
+          first={firstDefault}
+          onPage={(e) => setFirstDefault(e.first)}
+        >
+          {dynamicColumns}
+        </DataTable>
+        <div
+          className="w-100 hide-print"
+          style={{
+            textAlignLast: "left",
+            textAlign: "left",
+            float: "left",
+          }}
+        >
+          <Dropdown
+            value={amountRows}
+            options={amountRowsOptions}
+            onChange={(e) => {
+              setAmountRows(e.value);
             }}
-            paginator
-            rows={100}
-            value={props.fetchedData}
-            first={firstDefault}
-            onPage={(e) => setFirstDefault(e.first)}
-          >
-            {dynamicColumns}
-          </DataTable>
-        )}
-        {displayMode === "single_class" && (
-          <DataTable
-            ref={(el) => {
-              dt = el;
-            }}
-            paginator
-            rows={100}
-            value={props.fetchedData}
-            first={firstSingleClass}
-            onPage={(e) => setFirstSingleClass(e.first)}
-          >
-            {dynamicColumns}
-          </DataTable>
-        )}
+          />
+        </div>
       </div>
     </>
   );

@@ -1,9 +1,14 @@
 :root {
   --main: #ffd54f;
-  --label: #ffd64f85;
-  --shadow: #ffe284;
+  --text: #755a00;
+  --label: #a88100a8;
+  --shadow: #ffe2843f;
   --border: #ffd95e48;
-  --toggle-on: #ff8839;
+  --toggle-on: #a78000;
+  --surface-a: #fffef0;
+  --table-header: #ffed9e;
+  --table-even: #fff7d3;
+  --table-odd: #fffcef;
 }
 
 body {
@@ -22,18 +27,30 @@ hr {
   border-color: #ffd64f6b;
   width: 100%;
 }
-.p-invalid {
-  border-color: #dc354560 !important;
-  background-color: rgb(255, 178, 178);
-  color: white !important;
-  box-shadow: 0 0 32px rgba(255, 0, 0, 0.2);
+
+input,
+.p-inputtext {
+  color: var(--text) !important;
+  background-color: white;
 }
-input {
-  color: var(--main) !important;
+.p-inputtext.p-invalid {
+  border-color: #7c141e8a !important;
+  background-color: rgb(255, 220, 220);
+  box-shadow: 0 0 24px rgba(255, 0, 0, 0.157);
 }
+
 input[type="text"],
 input[type="time"] {
   cursor: text;
+}
+input[readonly] {
+  cursor: default;
+}
+input[readonly]:hover,
+input[readonly]:focus {
+  box-shadow: none;
+  -webkit-box-shadow: none !important;
+  border-color: #ced4da !important;
 }
 .align-left {
   text-align: left !important;
@@ -41,6 +58,9 @@ input[type="time"] {
 }
 .w-100 {
   width: 100% !important;
+}
+.w-50 {
+  width: 50% !important;
 }
 
 .floating-card {
@@ -51,8 +71,12 @@ input[type="time"] {
   border: 1px solid var(--main);
   background-color: var(--surface-a);
   padding: 2rem;
+  margin-bottom: 8vh;
 
   border-radius: 3px;
+}
+.p-dialog > * {
+  background-color: var(--surface-a) !important;
 }
 
 .loginCard {
@@ -78,7 +102,7 @@ input[type="time"] {
 }
 
 .card-header {
-  color: var(--main);
+  color: var(--text);
   margin: 0;
   padding: 0;
   font-size: 1.5rem;
@@ -207,6 +231,7 @@ input[type="time"] {
   text-align-last: left;
   font-size: 1rem;
   color: var(--label);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.294);
 
   position: relative;
   top: 16px;
@@ -243,9 +268,9 @@ input[type="time"] {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   width: 100%;
-  background: #17212f;
+  background-color: white;
   padding: 0.5rem 0.5rem;
-  border: 1px solid #304562;
+  border: 1px solid #0000002a;
   font-weight: normal;
   border-radius: 3px;
   text-align: left;
@@ -285,6 +310,7 @@ td {
 
 button.active {
   background-color: var(--toggle-on) !important;
+  border-color: var(--main);
 }
 
 .sidebar-mid > button > .pi-external-link {
@@ -297,8 +323,17 @@ button.active {
 
 .p-datatable {
   float: left !important;
+  border: 2px solid var(--table-header);
 }
-
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--table-header);
+}
+.p-datatable .p-datatable-tbody > tr:nth-child(even) > td {
+  background-color: var(--table-even);
+}
+.p-datatable .p-datatable-tbody > tr:nth-child(odd) > td {
+  background-color: var(--table-odd);
+}
 .text-admin,
 .text-light {
   font-size: 1.2vw;
@@ -306,6 +341,10 @@ button.active {
 }
 .text-admin {
   font-weight: bold;
+}
+
+.p-paginator {
+  background-color: var(--table-header);
 }
 @media print {
   .sidebar {

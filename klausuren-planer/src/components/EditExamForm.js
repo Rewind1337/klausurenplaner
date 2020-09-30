@@ -31,7 +31,7 @@ const EditExamForm = (props) => {
         label="Speichern"
         icon="pi pi-check"
         onClick={() => {
-          props.submit(
+          submit(
             classgrade,
             topic,
             date,
@@ -42,6 +42,8 @@ const EditExamForm = (props) => {
           );
           props.dialogVis(false);
         }}
+        tooltip="Änderungen Speichern"
+        tooltipOptions={{ position: "bottom" }}
       />
       <Button
         label="Abbrechen"
@@ -50,6 +52,8 @@ const EditExamForm = (props) => {
         onClick={() => {
           props.dialogVis(false);
         }}
+        tooltip="Abbrechen"
+        tooltipOptions={{ position: "bottom" }}
       />
     </div>
   );
@@ -120,6 +124,47 @@ const EditExamForm = (props) => {
     setTopic(s);
   };
 
+  const submit = (classgrade, topic, date, time, description) => {
+    let iso = date.toISOString();
+    let exam = {
+      classgrade: classgrade,
+      topic: topic,
+      description: description,
+      date:
+        iso.substring(0, 4) +
+        "-" +
+        iso.substring(5, 7) +
+        "-" +
+        iso.substring(8, 10) +
+        "T" +
+        time.substring(0, 2) +
+        ":" +
+        time.substring(3, 5) +
+        ":00",
+    };
+
+    if (
+      localStorage.getItem("user") != null ||
+      localStorage.getItem("user" != "")
+    ) {
+      exam.user = JSON.parse(localStorage.getItem("user"));
+    } else {
+      return false;
+    }
+
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(exam),
+    };
+
+    fetch(props.api_link + "/exams/add", options)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // TODO
+      });
+  };
+
   return (
     <>
       {props.visible && (
@@ -139,6 +184,7 @@ const EditExamForm = (props) => {
                   setUser(e.value);
                 }}
                 placeholder="Lehrer auswählen"
+                tooltip="Lehrer"
               />
             </div>
             <div className="p-col-12 p-my-2">
@@ -153,9 +199,10 @@ const EditExamForm = (props) => {
                 onChange={(e) => {
                   checkClassgrade(e.target.value);
                 }}
-                onBlur={(e) => {
+                onKeyUp={(e) => {
                   checkClassgrade(e.target.value);
                 }}
+                tooltip="Die Klasse (z.B. 12ITa)"
               />
             </div>
             <div className="p-col-12 p-my-2">
@@ -170,9 +217,10 @@ const EditExamForm = (props) => {
                 onChange={(e) => {
                   checkTopic(e.target.value);
                 }}
-                onBlur={(e) => {
+                onKeyUp={(e) => {
                   checkTopic(e.target.value);
                 }}
+                tooltip="Das Unterrichtsfach (z.B. LF7 oder Englisch)"
               />
             </div>
             <div className="p-col-6 p-my-1">
@@ -184,6 +232,9 @@ const EditExamForm = (props) => {
                 onChange={(date) => {
                   setDate(date);
                 }}
+                locale="de"
+                dateFormat="dd.MM.yyyy"
+                tooltip="Datum der Arbeit"
               />
             </div>
             <div className="p-col-6 p-my-1">
@@ -194,10 +245,11 @@ const EditExamForm = (props) => {
                 type="time"
                 value={time}
                 min="08:00"
-                max="16:00"
+                max="16:30"
                 onChange={(e) => {
                   setTime(e.target.value);
                 }}
+                tooltip="Uhrzeit der Arbeit (08:00 - 16:30)"
               />
             </div>
             <div className="p-col-12">
@@ -212,6 +264,7 @@ const EditExamForm = (props) => {
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
+                tooltip="Weitere Informationen"
               />
             </div>
           </div>

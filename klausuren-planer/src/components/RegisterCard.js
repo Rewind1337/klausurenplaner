@@ -76,7 +76,7 @@ const RegisterCard = (props) => {
           value={registerFirstName}
           placeholder="Vorname"
           onChange={(e) => checkFirstName(e.target.value)}
-          onBlur={(e) => {
+          onKeyUp={(e) => {
             checkFirstName(e.target.value);
           }}
         />
@@ -89,7 +89,7 @@ const RegisterCard = (props) => {
           value={registerLastName}
           placeholder="Nachname"
           onChange={(e) => checkLastName(e.target.value)}
-          onBlur={(e) => {
+          onKeyUp={(e) => {
             checkLastName(e.target.value);
           }}
         />
@@ -102,7 +102,7 @@ const RegisterCard = (props) => {
           value={registerUsername}
           placeholder="Benutzername"
           onChange={(e) => checkUsername(e.target.value)}
-          onBlur={(e) => {
+          onKeyUp={(e) => {
             checkUsername(e.target.value);
           }}
         />
@@ -116,7 +116,7 @@ const RegisterCard = (props) => {
           value={registerPassword1}
           placeholder="Passwort"
           onChange={(e) => checkPassword1(e.target.value)}
-          onBlur={(e) => {
+          onKeyUp={(e) => {
             checkPassword1(e.target.value);
           }}
         />
@@ -130,7 +130,7 @@ const RegisterCard = (props) => {
           value={registerPassword2}
           placeholder="Passwort wiederholen"
           onChange={(e) => checkPassword2(e.target.value)}
-          onBlur={(e) => {
+          onKeyUp={(e) => {
             checkPassword2(e.target.value);
           }}
         />

@@ -10,7 +10,8 @@ import Logo from "../bwshofheim.svg";
 import SidebarButton from "./SidebarButton";
 import ExamForm from "./ExamForm";
 import ImportForm from "./ImportForm";
-import Home from "./Home";
+import AccountSettings from "./AccountSettings";
+import TableWrapper from "./TableWrapper";
 import LoginCard from "./LoginCard";
 import RegisterCard from "./RegisterCard";
 
@@ -24,7 +25,8 @@ const App = () => {
   const [creatingAccount, setCreatingAccount] = useState(false);
 
   const [examFormVisibility, setExamFormVisibility] = useState(false);
-  const [homeVisibility, setHomeVisibility] = useState(false);
+  const [homeVisibility, setTableWrapperVisibility] = useState(false);
+  const [calendarVisibility, setCalendarVisibility] = useState(false);
 
   const [importDialogVisible, setImportDialogVisible] = useState(false);
   const [accountSettingsVisible, setAccountSettingsVisible] = useState(false);
@@ -38,19 +40,11 @@ const App = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const accountSettingsBody = (
-    <ImportForm
-      visible={true}
-      api_link={api_link}
-      isAdmin={isAdmin}
-    ></ImportForm>
+    <AccountSettings visible={true} api_link={api_link} />
   );
 
   const importDialogBody = (
-    <ImportForm
-      visible={true}
-      api_link={api_link}
-      isAdmin={isAdmin}
-    ></ImportForm>
+    <ImportForm visible={true} api_link={api_link} isAdmin={isAdmin} />
   );
 
   const tryLogin = (username, password) => {
@@ -71,8 +65,15 @@ const App = () => {
               "," +
               JSON.parse(localStorage.getItem("user")).firstname
           );
-          if (data.userrole.id === 2) setIsAdmin(true);
-          doLogin();
+          console.log(data);
+          if (data.admin) {
+            setIsAdmin(true);
+            doLogin();
+          }
+          if (!data.admin) {
+            setIsAdmin(false);
+            doLogin();
+          }
         }
       })
       .catch(() => {
@@ -108,23 +109,17 @@ const App = () => {
   const doLogin = () => {
     setLoggedIn(true);
     setRedirect(true);
-    setHomeVisibility(true);
+    setTableWrapperVisibility(true);
   };
 
   const doLogout = () => {
     localStorage.setItem("user", "null");
     setRedirect(false);
-    setHomeVisibility(false);
     setLoggedIn(false);
   };
 
   const doRegister = () => {
     setCreatingAccount(false);
-  };
-
-  const switchToHome = () => {
-    setHomeVisibility(true);
-    setExamFormVisibility(false);
   };
 
   const openImporter = () => {
@@ -135,9 +130,22 @@ const App = () => {
     setAccountSettingsVisible(true);
   };
 
+  const switchToTableWrapper = () => {
+    setTableWrapperVisibility(true);
+    setCalendarVisibility(false);
+    setExamFormVisibility(false);
+  };
+
   const switchToExamForm = () => {
-    setHomeVisibility(false);
+    setTableWrapperVisibility(false);
+    setCalendarVisibility(false);
     setExamFormVisibility(true);
+  };
+
+  const switchToCalendar = () => {
+    setTableWrapperVisibility(false);
+    setExamFormVisibility(false);
+    setCalendarVisibility(true);
   };
 
   return (
@@ -185,9 +193,15 @@ const App = () => {
               <div className="sidebar-mid">
                 <SidebarButton
                   expand={sidebarExpanded}
-                  f={switchToHome}
-                  label="Home"
-                  icon="pi pi-home"
+                  f={switchToTableWrapper}
+                  label="Tabelle"
+                  icon="pi pi-table"
+                />
+                <SidebarButton
+                  expand={sidebarExpanded}
+                  f={switchToCalendar}
+                  label="Kalender"
+                  icon="pi pi-calendar"
                 />
                 <SidebarButton
                   expand={sidebarExpanded}
@@ -230,17 +244,17 @@ const App = () => {
               </div>
             </div>
           </div>
-          <Home
+          <TableWrapper
             visible={homeVisibility}
             setExamVisibility={setExamFormVisibility}
-            setHomeVisibility={setHomeVisibility}
+            setTableWrapperVisibility={setTableWrapperVisibility}
             api_link={api_link}
             isAdmin={isAdmin}
           />
           <ExamForm
             visible={examFormVisibility}
             setExamFormVisibility={setExamFormVisibility}
-            setHomeVisibility={setHomeVisibility}
+            setTableWrapperVisibility={setTableWrapperVisibility}
             api_link={api_link}
             isAdmin={isAdmin}
           />

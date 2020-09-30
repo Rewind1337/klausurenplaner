@@ -8,7 +8,11 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 
 import DatePicker from "react-datepicker";
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import de from "date-fns/locale/de";
 import "react-datepicker/dist/react-datepicker.css";
+
+registerLocale("de", de);
 
 const ExamForm = (props) => {
   const [teacher, setTeacher] = useState("");
@@ -134,6 +138,7 @@ const ExamForm = (props) => {
                   }}
                   placeholder="Lehrer auswählen"
                   disabled={teacherSelectDisabled}
+                  tooltip="Lehrer"
                 />
               </div>
               <div className="p-col-12 mb-1">
@@ -148,6 +153,7 @@ const ExamForm = (props) => {
                   onBlur={(e) => {
                     checkClassgrade(e.target.value);
                   }}
+                  tooltip="Die Klasse (z.B. 12ITa)"
                 />
               </div>
               <div className="p-col-12 mb-1">
@@ -162,6 +168,7 @@ const ExamForm = (props) => {
                   onBlur={(e) => {
                     checkTopic(e.target.value);
                   }}
+                  tooltip="Das Unterrichtsfach (z.B. LF7 oder Englisch)"
                 />
               </div>
               <div className="p-col-6">
@@ -171,6 +178,9 @@ const ExamForm = (props) => {
                   onChange={(date) => {
                     setDate(date);
                   }}
+                  locale="de"
+                  dateFormat="dd.MM.yyyy"
+                  tooltip="Datum der Arbeit"
                 />
               </div>
               <div className="p-col-6">
@@ -183,6 +193,7 @@ const ExamForm = (props) => {
                   onChange={(e) => {
                     setTime(e.target.value);
                   }}
+                  tooltip="Uhrzeit der Arbeit (08:00 - 16:30)"
                 />
               </div>
               <div className="p-col-12 mb-1">
@@ -195,6 +206,7 @@ const ExamForm = (props) => {
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}
+                  tooltip="Weitere Informationen"
                 />
               </div>
               <div className="p-col-12">
@@ -203,9 +215,11 @@ const ExamForm = (props) => {
                   icon="pi pi-plus"
                   onClick={() => {
                     submitExam(classgrade, topic, date, time, description);
-                    props.setHomeVisibility(true);
+                    props.setTableWrapperVisibility(true);
                     props.setExamFormVisibility(false);
                   }}
+                  tooltip="Erstellen"
+                  tooltipOptions={{ position: "bottom" }}
                 />
               </div>
             </div>

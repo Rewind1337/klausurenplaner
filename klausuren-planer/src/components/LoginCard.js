@@ -29,8 +29,14 @@ const LoginCard = (props) => {
                 "," +
                 JSON.parse(localStorage.getItem("user")).firstname
             );
-            if (data.userrole.id === 2) props.setIsAdmin(true);
-            props.doLogin();
+            if (data.admin) {
+              props.setIsAdmin(true);
+              props.doLogin();
+            }
+            if (!data.admin) {
+              props.setIsAdmin(false);
+              props.doLogin();
+            }
           }
         });
     }
