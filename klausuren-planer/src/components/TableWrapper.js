@@ -67,10 +67,6 @@ const TableWrapper = (props) => {
     ></EditExamForm>
   );
 
-  useEffect(() => {
-    fetchAllExams();
-  }, [props.submitExam, props.deleteExam]);
-
   return (
     <>
       {props.visible && (
@@ -85,6 +81,7 @@ const TableWrapper = (props) => {
               fetchedData={fetchedData}
               api_link={props.api_link}
               isAdmin={props.isAdmin}
+              reFetch={fetchAllExams}
             />
             <Dialog
               header="Eintrag bearbeiten"

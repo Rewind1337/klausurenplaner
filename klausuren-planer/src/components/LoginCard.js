@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import "../css/global.css";
 
+import Logo from "../bwshofheim.svg";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
@@ -45,6 +46,7 @@ const LoginCard = (props) => {
   return (
     <>
       <div className="p-col p-col-12">
+        <img src={Logo} className="loginImg" alt="BWS Hofheim" />
         <span className="card-header p-text-uppercase">Klausurenplaner</span>
       </div>
       <hr />

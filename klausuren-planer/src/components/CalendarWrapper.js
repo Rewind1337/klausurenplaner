@@ -1,16 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 import "../css/global.css";
 
-import Table from "./Table";
-import EditExamForm from "./EditExamForm";
+import FullCalendar, { formatDate } from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
-import { Dialog } from "primereact/dialog";
+import "@fullcalendar/common/main.css";
+import "@fullcalendar/daygrid/main.css";
+import "@fullcalendar/timegrid/main.css";
 
 const CalendarWrapper = (props) => {
-  const [editDialogVisible, setEditDialogVisible] = useState(false);
-  const [editing, setEditing] = useState("");
-  const [fetchedData, setFetchedData] = useState([]);
+  let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
+
+  const [fetchedData, setFetchedData] = useState([
+    { title: "The Title", start: "2018-09-01" },
+  ]);
+
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     fetchAllExams();
@@ -56,47 +64,27 @@ const CalendarWrapper = (props) => {
       });
   };
 
-  const editDialogBody = (
-    <EditExamForm
-      visible={true}
-      editing={editing}
-      submit={props.submitExam}
-      delete={props.deleteExam}
-      dialogVis={setEditDialogVisible}
-      api_link={props.api_link}
-    ></EditExamForm>
-  );
-
-  useEffect(() => {
-    fetchAllExams();
-  }, [props.submitExam, props.deleteExam]);
-
   return (
     <>
       {props.visible && (
-        <div className="container-home">
-          <div className="floating-card exam-table">
+        <div className="container-calendar">
+          <div className="floating-card calendar">
             <div className="card-header">Anstehende Arbeiten</div>
-            <Table
-              dialogVis={setEditDialogVisible}
-              setTarget={setEditing}
-              delete={props.deleteExam}
-              editing={editing}
-              fetchedData={fetchedData}
-              api_link={props.api_link}
-              isAdmin={props.isAdmin}
-            />
-            <Dialog
-              header="Eintrag bearbeiten"
-              visible={editDialogVisible}
-              footer={<></>}
-              style={{ width: "75vw" }}
-              onHide={() => {
-                setEditDialogVisible(false);
+            <FullCalendar
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              headerToolbar={{
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay",
               }}
-            >
-              {editDialogBody}
-            </Dialog>
+              events={fetchedData}
+              initialView="dayGridMonth"
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+              weekends={true}
+            />
           </div>
         </div>
       )}

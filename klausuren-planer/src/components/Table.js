@@ -51,7 +51,7 @@ const Table = (props) => {
       <Column
         className="hide-print"
         key={"actionsColumn"}
-        body={dateTemplate}
+        body={tableActions}
         field={"actions"}
         header={"Aktionen"}
       />
@@ -89,9 +89,17 @@ const Table = (props) => {
     dt.exportCSV();
   };
 
-  const dateTemplate = (rowData, column) => {
+  const tableActions = (rowData, column) => {
     return (
       <>
+        <Button
+          className="p-button-info p-m-1"
+          label=""
+          icon="pi pi-eye"
+          onClick={() => {
+            rowColumnView(rowData);
+          }}
+        />
         <Button
           className="p-button-primary p-m-1"
           label=""
@@ -118,11 +126,17 @@ const Table = (props) => {
     props.dialogVis(true);
     props.setTarget(rowData);
     setUpdate(!update);
+    props.reFetch();
   };
 
   const rowColumnDelete = (rowData, column) => {
     props.setTarget(rowData);
     props.delete(rowData.id);
+    props.reFetch();
+    setUpdate(!update);
+  };
+
+  const rowColumnView = (rowData, column) => {
     setUpdate(!update);
   };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "../css/global.css";
 
+import Logo from "../bwshofheim.svg";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
@@ -65,6 +66,7 @@ const RegisterCard = (props) => {
   return (
     <>
       <div className="p-col p-col-12">
+        <img src={Logo} className="loginImg" alt="BWS Hofheim" />
         <span className="card-header p-text-uppercase">Registrieren</span>
       </div>
       <hr />

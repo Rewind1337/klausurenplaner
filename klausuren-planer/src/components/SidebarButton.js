@@ -20,7 +20,7 @@ const SidebarButton = (props) => {
       {!props.expand && (
         <Button
           onClick={() => {
-            props.click();
+            props.f();
           }}
           className="w-100"
           icon={props.icon}

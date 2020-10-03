@@ -11,6 +11,16 @@
   --table-odd: #fffcef;
 }
 
+.loading-spinner {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#burgerButton {
+  display: none;
+}
+
 body {
   margin: 0 !important;
   padding: 0 !important;
@@ -69,7 +79,14 @@ input[readonly]:focus {
   box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
     0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
   border: 1px solid var(--main);
-  background-color: var(--surface-a);
+  background-image: linear-gradient(
+    to bottom,
+    #fffef0,
+    #fcfbeb,
+    #faf8e6,
+    #f7f6e2,
+    #f4f3dd
+  );
   padding: 2rem;
   margin-bottom: 8vh;
 
@@ -80,13 +97,25 @@ input[readonly]:focus {
 }
 
 .loginCard {
-  margin-top: 15vh;
+  margin-top: 10vh;
   margin-left: 29.3%;
   margin-right: 29.3%;
   width: 41.4%;
 }
 
-.exam-table {
+.loginImg {
+  object-fit: contain !important;
+  height: 128px;
+  margin-left: 50%;
+  padding: 8px;
+  border-radius: 8px;
+  transform: translateX(-50%);
+  margin-bottom: 12px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.exam-table,
+.container-calendar {
   width: 80%;
   margin-left: 10%;
   margin-right: 10%;
@@ -118,8 +147,14 @@ input[readonly]:focus {
   top: 0;
 
   padding: 0.5rem;
-
-  background-color: var(--surface-a);
+  background-image: linear-gradient(
+    to bottom,
+    #fffef0,
+    #fcfbeb,
+    #faf8e6,
+    #f7f6e2,
+    #f4f3dd
+  );
   border-right: 1px solid var(--main);
 
   box-shadow: 4px 0px 8px transparent;
@@ -139,7 +174,7 @@ input[readonly]:focus {
   width: 100% !important;
   height: 7vh;
   min-height: 36px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 3px;
   padding-bottom: 6px;
 }
@@ -361,5 +396,83 @@ button.active {
 
   .p-paginator {
     display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-calendar,
+  .container-examform,
+  .container-home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+  }
+
+  .floating-card {
+    margin: 0;
+    padding: 64px 64px 32px 64px;
+    width: 100vw;
+    min-height: 100vh;
+    height: auto;
+    max-height: auto;
+    border: none;
+  }
+
+  .sidebar {
+    position: absolute !important;
+    top: 0 !important;
+    left: -100vw !important;
+    width: 100vw;
+    z-index: 15100 !important;
+    transition: left 0.2s ease-in;
+  }
+
+  .sidebar.active {
+    left: 0vw !important;
+    transition: left 0.2s ease-out;
+  }
+
+  .sidebar-header {
+    height: 10vh;
+  }
+
+  .sidebar-content {
+    height: 87vh;
+  }
+
+  .sidebar-mid > .p-button {
+    height: calc(80% / 5);
+  }
+
+  #burgerButton {
+    display: block;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 48px;
+    height: 48px;
+    z-index: 900;
+  }
+
+  .p-dialog {
+    width: 95vw !important;
+  }
+
+  .loginCard {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    margin-top: 5% !important;
+    width: 90% !important;
+  }
+
+  .loginCard input,
+  .loginCard button,
+  .p-dialog input,
+  .p-dialog button {
+    line-height: 2;
+    font-size: 120% !important;
   }
 }

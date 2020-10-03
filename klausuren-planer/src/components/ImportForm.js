@@ -67,8 +67,8 @@ const ImportForm = (props) => {
                 pj.user = data;
                 parsedInvoiceFile.push(pj);
               })
-              .catch((e) => {
-                console.log(e);
+              .catch(() => {
+                props.tError("Fehler beim Importieren!");
               });
           }
 
@@ -81,13 +81,14 @@ const ImportForm = (props) => {
 
             fetch(props.api_link + "/" + selected + "/batchadd", options)
               .then((response) => response.json())
-              .then((data) => {
-                console.log(data);
+              .then(() => {
+                props.tSuccess("Erfolgreich importiert!");
               })
               .catch((e) => {
                 console.log(e);
+                props.tError("Fehler beim Importieren!");
               });
-          }, 1000);
+          }, 500);
         }
       });
   };

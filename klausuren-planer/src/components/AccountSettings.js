@@ -16,7 +16,7 @@ const AccountSettings = (props) => {
     <>
       {props.visible && (
         <div className="p-grid">
-          <div className="p-grid p-col-8">
+          <div className="p-grid p-col-12">
             <div className="p-col p-col-12 p-my-2">
               <div className="examForm-label" style={{ top: "0px" }}>
                 Vorname
@@ -53,9 +53,6 @@ const AccountSettings = (props) => {
               />
               <Button label="Bearbeiten" icon="pi pi-pencil" />
             </div>
-          </div>
-          <div className="p-grid p-col-4">
-            <div className="p-col-12"></div>
           </div>
         </div>
       )}

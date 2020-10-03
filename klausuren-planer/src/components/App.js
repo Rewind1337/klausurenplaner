@@ -6,21 +6,27 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "../css/global.css";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Logo from "../bwshofheim.svg";
 import SidebarButton from "./SidebarButton";
 import ExamForm from "./ExamForm";
 import ImportForm from "./ImportForm";
 import AccountSettings from "./AccountSettings";
 import TableWrapper from "./TableWrapper";
+import CalendarWrapper from "./CalendarWrapper";
 import LoginCard from "./LoginCard";
 import RegisterCard from "./RegisterCard";
 
 import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
 
 import { HashRouter as Router, Redirect, Route } from "react-router-dom";
 import sha512 from "crypto-js/sha512";
 
 const App = () => {
+  const [isFetching, setIsFetching] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [creatingAccount, setCreatingAccount] = useState(false);
 
@@ -39,15 +45,8 @@ const App = () => {
   const api_link = "http://localhost:8080";
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const accountSettingsBody = (
-    <AccountSettings visible={true} api_link={api_link} />
-  );
-
-  const importDialogBody = (
-    <ImportForm visible={true} api_link={api_link} isAdmin={isAdmin} />
-  );
-
   const tryLogin = (username, password) => {
+    setIsFetching(true);
     const user = {
       username: username,
       password: password,
@@ -74,14 +73,20 @@ const App = () => {
             setIsAdmin(false);
             doLogin();
           }
+          setIsFetching(false);
+        } else {
+          tError("Fehler beim Anmelden!");
+          setIsFetching(false);
         }
       })
       .catch(() => {
-        // TODO
+        tError("Fehler beim Anmelden!");
+        setIsFetching(false);
       });
   };
 
   const tryRegister = (username, password, firstname, lastname) => {
+    setIsFetching(true);
     const user = {
       username: username,
       password: password,
@@ -99,10 +104,17 @@ const App = () => {
     fetch(api_link + "/users/add", options)
       .then((response) => response.json())
       .then((data) => {
-        doRegister();
+        if (data.status == 500) {
+          tError("Fehler beim Registrieren! Bitte überprüfe alle Felder");
+          setIsFetching(false);
+        } else {
+          doRegister();
+          setIsFetching(false);
+        }
       })
       .catch(() => {
-        // TODO
+        tError("Fehler beim Registrieren! Bitte überprüfe alle Felder");
+        setIsFetching(false);
       });
   };
 
@@ -110,46 +122,104 @@ const App = () => {
     setLoggedIn(true);
     setRedirect(true);
     setTableWrapperVisibility(true);
+    setSidebarExpanded(false);
   };
 
   const doLogout = () => {
     localStorage.setItem("user", "null");
     setRedirect(false);
     setLoggedIn(false);
+    tSuccess("Erfolgreich ausgeloggt!");
+    setSidebarExpanded(false);
   };
 
   const doRegister = () => {
     setCreatingAccount(false);
+    tSuccess("Erfolgreich erstellt!");
+    setSidebarExpanded(false);
   };
 
   const openImporter = () => {
     setImportDialogVisible(true);
+    setSidebarExpanded(false);
   };
 
   const openAccountSettings = () => {
     setAccountSettingsVisible(true);
+    setSidebarExpanded(false);
   };
 
   const switchToTableWrapper = () => {
     setTableWrapperVisibility(true);
     setCalendarVisibility(false);
     setExamFormVisibility(false);
+
+    setSidebarExpanded(false);
   };
 
   const switchToExamForm = () => {
     setTableWrapperVisibility(false);
     setCalendarVisibility(false);
     setExamFormVisibility(true);
+
+    setSidebarExpanded(false);
   };
 
   const switchToCalendar = () => {
     setTableWrapperVisibility(false);
     setExamFormVisibility(false);
     setCalendarVisibility(true);
+
+    setSidebarExpanded(false);
   };
+
+  const tSuccess = (text) => toast.success(text);
+  const tError = (text) => toast.error(text);
+
+  const deleteExam = (examID) => {
+    fetch(api_link + "/exams/delete/" + examID, { method: "DELETE" })
+      .then((response) => response.json())
+      .then(() => {
+        tSuccess("Erfolgreich gelöscht!");
+      });
+  };
+
+  const accountSettingsBody = (
+    <AccountSettings
+      visible={true}
+      api_link={api_link}
+      isAdmin={isAdmin}
+      tSuccess={tSuccess}
+      tError={tError}
+    />
+  );
+
+  const importDialogBody = (
+    <ImportForm
+      visible={true}
+      api_link={api_link}
+      isAdmin={isAdmin}
+      tSuccess={tSuccess}
+      tError={tError}
+    />
+  );
 
   return (
     <Router>
+      <Route path="/">
+        {loggedIn && (
+          <Button
+            id="burgerButton"
+            label=""
+            icon="pi pi-bars"
+            style={{ fontSize: "125%" }}
+            onClick={() => {
+              setSidebarExpanded(true);
+            }}
+          />
+        )}
+        <ToastContainer />
+      </Route>
       <Route exact path="/">
         {redirect && <Redirect to="/index" />}
         <div className="floating-card loginCard">
@@ -171,6 +241,17 @@ const App = () => {
               />
             )}
           </div>
+        </div>
+        <div className="loading-spinner">
+          {isFetching && (
+            <i
+              className="pi pi-spin pi-spinner"
+              style={{
+                fontSize: "5em",
+                color: "#ffd54f",
+              }}
+            ></i>
+          )}
         </div>
       </Route>
       <Route exact path="/index">
@@ -228,13 +309,6 @@ const App = () => {
                 )}
               </div>
               <div className="sidebar-bot">
-                <div className="w-100">
-                  {sidebarExpanded && (
-                    <span className={isAdmin ? "text-admin" : "text-light"}>
-                      {loggedInUser}
-                    </span>
-                  )}
-                </div>
                 <SidebarButton
                   expand={sidebarExpanded}
                   f={doLogout}
@@ -244,21 +318,43 @@ const App = () => {
               </div>
             </div>
           </div>
-          <TableWrapper
-            visible={homeVisibility}
-            setExamVisibility={setExamFormVisibility}
-            setTableWrapperVisibility={setTableWrapperVisibility}
-            api_link={api_link}
-            isAdmin={isAdmin}
-          />
-          <ExamForm
-            visible={examFormVisibility}
-            setExamFormVisibility={setExamFormVisibility}
-            setTableWrapperVisibility={setTableWrapperVisibility}
-            api_link={api_link}
-            isAdmin={isAdmin}
-          />
-
+          {homeVisibility && (
+            <TableWrapper
+              visible={homeVisibility}
+              setExamVisibility={setExamFormVisibility}
+              setTableWrapperVisibility={setTableWrapperVisibility}
+              setCalendarVisibility={setCalendarVisibility}
+              api_link={api_link}
+              isAdmin={isAdmin}
+              deleteExam={deleteExam}
+              tSuccess={tSuccess}
+              tError={tError}
+            />
+          )}
+          {calendarVisibility && (
+            <CalendarWrapper
+              visible={calendarVisibility}
+              setExamVisibility={setExamFormVisibility}
+              setTableWrapperVisibility={setTableWrapperVisibility}
+              setCalendarVisibility={setCalendarVisibility}
+              api_link={api_link}
+              isAdmin={isAdmin}
+              tSuccess={tSuccess}
+              tError={tError}
+            />
+          )}
+          {examFormVisibility && (
+            <ExamForm
+              visible={examFormVisibility}
+              setExamFormVisibility={setExamFormVisibility}
+              setTableWrapperVisibility={setTableWrapperVisibility}
+              setCalendarVisibility={setCalendarVisibility}
+              api_link={api_link}
+              isAdmin={isAdmin}
+              tSuccess={tSuccess}
+              tError={tError}
+            />
+          )}
           <Dialog
             header="Einträge Importieren"
             visible={importDialogVisible}
@@ -267,11 +363,10 @@ const App = () => {
             onHide={() => {
               setImportDialogVisible(false);
             }}
-            isAdmin={isAdmin}
+            dismissableMask={true}
           >
             {importDialogBody}
           </Dialog>
-
           <Dialog
             header="Profil bearbeiten"
             visible={accountSettingsVisible}
@@ -280,7 +375,7 @@ const App = () => {
             onHide={() => {
               setAccountSettingsVisible(false);
             }}
-            isAdmin={isAdmin}
+            dismissableMask={true}
           >
             {accountSettingsBody}
           </Dialog>

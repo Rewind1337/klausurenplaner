@@ -101,6 +101,7 @@ const ExamForm = (props) => {
     ) {
       exam.user = JSON.parse(localStorage.getItem("user"));
     } else {
+      props.tError("Fehler beim Erstellen!");
       return false;
     }
 
@@ -112,8 +113,11 @@ const ExamForm = (props) => {
 
     fetch(props.api_link + "/exams/add", options)
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data); // TODO
+      .then(() => {
+        props.tSuccess("Erfolgreich erstellt!");
+      })
+      .catch(() => {
+        props.tError("Fehler beim Erstellen!");
       });
   };
 
