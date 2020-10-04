@@ -93,7 +93,7 @@ const Table = (props) => {
     return (
       <>
         <Button
-          className="p-button-info p-m-1"
+          className="p-button-info mobile-w-100"
           label=""
           icon="pi pi-eye"
           onClick={() => {
@@ -101,7 +101,7 @@ const Table = (props) => {
           }}
         />
         <Button
-          className="p-button-primary p-m-1"
+          className="p-button-primary p-mx-1 mobile-w-100"
           label=""
           icon="pi pi-pencil"
           onClick={() => {
@@ -110,7 +110,7 @@ const Table = (props) => {
         />
         {props.isAdmin && (
           <Button
-            className="p-button-danger p-m-1"
+            className="p-button-danger mobile-w-100"
             label=""
             icon="pi pi-times"
             onClick={() => {
@@ -146,7 +146,7 @@ const Table = (props) => {
     <>
       <div className="container-table">
         <div
-          className="w-50 hide-print"
+          className="w-50 hide-print mobile-w-100"
           style={{
             textAlignLast: "left",
             textAlign: "left",
@@ -161,11 +161,11 @@ const Table = (props) => {
               updateDisplay(e.value);
             }}
             placeholder="Lehrer auswählen"
-            className="p-mb-1 w-50"
+            className="p-mb-1 w-50 mobile-w-100"
           />
         </div>
         <div
-          className="w-50 hide-print"
+          className="w-50 hide-print mobile-hide"
           style={{
             textAlignLast: "right",
             textAlign: "right",

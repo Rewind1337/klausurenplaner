@@ -69,7 +69,7 @@ const CalendarWrapper = (props) => {
       {props.visible && (
         <div className="container-calendar">
           <div className="floating-card calendar">
-            <div className="card-header">Anstehende Arbeiten</div>
+            <div className="card-header p-mb-3">Anstehende Arbeiten</div>
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={{

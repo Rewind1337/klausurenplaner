@@ -6,6 +6,7 @@ import Table from "./Table";
 import EditExamForm from "./EditExamForm";
 
 import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
 
 const TableWrapper = (props) => {
   const [editDialogVisible, setEditDialogVisible] = useState(false);
@@ -46,11 +47,14 @@ const TableWrapper = (props) => {
             parsedData[j].date = formatDate(data[j].date);
             parsedData[j].teacher =
               data[j].user.firstname + " " + data[j].user.lastname;
+            parsedData[j].description =
+              data[j].description.substring(0, 40) + "...";
           }
         } else {
           parsedData = data;
           parsedData.date = formatDate(parsedData.date);
           parsedData.teacher = data.user.firstname + " " + data.user.lastname;
+          parsedData.description = data.description.substring(0, 40) + "...";
         }
         setFetchedData(parsedData);
       });
@@ -71,6 +75,16 @@ const TableWrapper = (props) => {
     <>
       {props.visible && (
         <div className="container-home">
+          <Button
+            label=""
+            icon="pi pi-print"
+            className="btn-fab fab-1 p-button-raised p-button-rounded"
+          />
+          <Button
+            label=""
+            icon="pi pi-external-link"
+            className="btn-fab fab-2 p-button-raised p-button-rounded"
+          />
           <div className="floating-card exam-table">
             <div className="card-header">Anstehende Arbeiten</div>
             <Table
@@ -91,6 +105,7 @@ const TableWrapper = (props) => {
               onHide={() => {
                 setEditDialogVisible(false);
               }}
+              dismissableMask={true}
             >
               {editDialogBody}
             </Dialog>

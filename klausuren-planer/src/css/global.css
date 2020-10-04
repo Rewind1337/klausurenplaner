@@ -17,6 +17,10 @@
   transform: translateX(-50%);
 }
 
+.btn-fab {
+  display: none;
+}
+
 #burgerButton {
   display: none;
 }
@@ -92,7 +96,7 @@ input[readonly]:focus {
 
   border-radius: 3px;
 }
-.p-dialog > * {
+.exam-table .p-dialog > * {
   background-color: var(--surface-a) !important;
 }
 
@@ -107,6 +111,7 @@ input[readonly]:focus {
   object-fit: contain !important;
   height: 128px;
   margin-left: 50%;
+  margin-right: 25%;
   padding: 8px;
   border-radius: 8px;
   transform: translateX(-50%);
@@ -114,12 +119,20 @@ input[readonly]:focus {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.p-datatable-thead > tr > th:first-child {
+  width: 120px;
+}
+
 .exam-table,
-.container-calendar {
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-top: 3rem;
+.container-calendar,
+.examForm {
+  width: 94%;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 3%;
+}
+.exam-table {
+  min-width: 900px;
 }
 
 .container-info {
@@ -220,6 +233,45 @@ input[readonly]:focus {
   flex-shrink: 1;
 }
 
+.fc-toolbar-chunk {
+  width: 33.333%;
+}
+.fc-direction-ltr .fc-toolbar > * > * {
+  margin: 0 !important;
+  float: left;
+  height: 6vh;
+}
+.fc-button-group {
+  width: 50%;
+  margin-right: 8px !important;
+}
+.fc-button-group button {
+  margin-right: 8px !important;
+}
+.fc-button-group .fc-icon {
+  width: 100%;
+  font-size: 1.3rem !important;
+}
+.fc-today-button {
+  width: 50%;
+  text-align-last: center !important;
+  font-size: 1.12rem !important;
+}
+.fc-toolbar-title {
+  color: var(--text);
+  width: 100%;
+  text-align: center;
+}
+.fc-toolbar-chunk:last-child > .fc-button-group {
+  width: 100%;
+}
+.fc-toolbar-chunk:last-child > .fc-button-group > * {
+  text-align-last: center !important;
+  font-size: 1.12rem !important;
+}
+.fc-toolbar-chunk:last-child > .fc-button-group > :last-child {
+  margin: 0 !important;
+}
 .container {
   display: flex;
   flex-direction: row;
@@ -229,7 +281,6 @@ input[readonly]:focus {
 
 .container-home,
 .container-examform {
-  flex-grow: 1000;
   height: 100vh;
   overflow: auto;
   background: rgba(255, 255, 255, 0.05);
@@ -241,15 +292,6 @@ input[readonly]:focus {
   overflow: auto;
   color: white;
   font-size: 3rem;
-}
-
-.examForm {
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-top: 3rem;
-  padding-right: 10%;
-  padding-left: 10%;
 }
 
 .examForm > .card-header {
@@ -411,10 +453,40 @@ button.active {
     width: 100vw;
   }
 
+  .pi {
+    font-size: unset !important;
+  }
+
+  .btn-fab {
+    position: fixed;
+    width: 60px !important;
+    height: 60px !important;
+    bottom: 16px;
+    z-index: 990;
+    padding: 4px !important;
+    font-size: 24px !important;
+    display: flex !important;
+  }
+  .fab-1 {
+    right: 16px;
+  }
+  .fab-2 {
+    right: 92px;
+  }
+
+  .mobile-w-100 {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .mobile-hide {
+    display: none !important;
+  }
+
   .floating-card {
     margin: 0;
-    padding: 64px 64px 32px 64px;
+    padding: 16px;
     width: 100vw;
+    min-width: 480px;
     min-height: 100vh;
     height: auto;
     max-height: auto;
@@ -459,6 +531,41 @@ button.active {
 
   .p-dialog {
     width: 95vw !important;
+  }
+
+  .examForm > .card-header {
+    text-align: center;
+    text-align-last: center;
+    width: 75%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+  }
+  .examForm input,
+  .examForm select,
+  .examForm textarea,
+  .examForm .p-dropdown-label {
+    line-height: 1.8;
+    font-size: 1.2rem !important;
+  }
+  .examForm .p-dropdown {
+    margin-top: 2vh !important;
+  }
+  .examForm button {
+    height: 8vh;
+    margin-top: 2vh !important;
+  }
+  .p-fileupload-buttonbar,
+  .p-fileupload-buttonbar > * {
+    width: 100%;
+    height: auto;
+  }
+  .p-fileupload-buttonbar > * {
+    height: 7vh;
+    font-size: 120%;
+  }
+
+  .sidebar-content button {
+    font-size: 140%;
   }
 
   .loginCard {
