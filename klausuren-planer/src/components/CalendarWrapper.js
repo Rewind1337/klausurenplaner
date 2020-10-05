@@ -7,6 +7,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
+import deLocale from "@fullcalendar/core/locales/de";
+
 import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
@@ -83,7 +85,8 @@ const CalendarWrapper = (props) => {
               selectable={true}
               selectMirror={true}
               dayMaxEvents={true}
-              weekends={true}
+              weekends={false}
+              locale={deLocale}
             />
           </div>
         </div>

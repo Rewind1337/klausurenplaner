@@ -145,7 +145,7 @@ const ExamForm = (props) => {
                   tooltip="Lehrer"
                 />
               </div>
-              <div className="p-col-12 mb-1">
+              <div className="p-col-6 mb-2">
                 <div className="examForm-label">Klasse</div>
                 <InputText
                   className={"" + (classgradeVal ? "" : " p-invalid")}
@@ -160,7 +160,7 @@ const ExamForm = (props) => {
                   tooltip="Die Klasse (z.B. 12ITa)"
                 />
               </div>
-              <div className="p-col-12 mb-1">
+              <div className="p-col-6 mb-2">
                 <div className="examForm-label">Unterrichtsfach</div>
                 <InputText
                   className={"" + (topicVal ? "" : " p-invalid")}
@@ -206,11 +206,11 @@ const ExamForm = (props) => {
                   type="text"
                   value={description}
                   placeholder="(optional)"
-                  style={{ marginTop: "1.5rem" }}
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}
                   tooltip="Weitere Informationen"
+                  style={{ height: "13vh", marginTop: "1.5rem" }}
                 />
               </div>
               <div className="p-col-12">

@@ -137,6 +137,7 @@ const Table = (props) => {
   };
 
   const rowColumnView = (rowData, column) => {
+    props.setViewing(rowData);
     setUpdate(!update);
   };
 

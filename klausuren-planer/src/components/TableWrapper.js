@@ -4,13 +4,16 @@ import "../css/global.css";
 
 import Table from "./Table";
 import EditExamForm from "./EditExamForm";
+import DetailView from "./DetailView";
 
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 
 const TableWrapper = (props) => {
   const [editDialogVisible, setEditDialogVisible] = useState(false);
+  const [detailViewVisible, setDetailViewVisible] = useState(false);
   const [editing, setEditing] = useState("");
+  const [viewing, setViewing] = useState("");
   const [fetchedData, setFetchedData] = useState([]);
 
   useEffect(() => {
@@ -48,13 +51,18 @@ const TableWrapper = (props) => {
             parsedData[j].teacher =
               data[j].user.firstname + " " + data[j].user.lastname;
             parsedData[j].description =
-              data[j].description.substring(0, 40) + "...";
+              data[j].description.length > 28
+                ? data[j].description.substring(0, 30) + "..."
+                : data[j].description;
           }
         } else {
           parsedData = data;
           parsedData.date = formatDate(parsedData.date);
           parsedData.teacher = data.user.firstname + " " + data.user.lastname;
-          parsedData.description = data.description.substring(0, 40) + "...";
+          parsedData.description =
+            data.description.length > 28
+              ? data.description.substring(0, 30) + "..."
+              : data.description;
         }
         setFetchedData(parsedData);
       });
@@ -71,6 +79,16 @@ const TableWrapper = (props) => {
     ></EditExamForm>
   );
 
+  const viewExamBody = (
+    <DetailView
+      visible={true}
+      viewing={viewing}
+      dialogVis={setDetailViewVisible}
+    ></DetailView>
+  );
+
+  var dt;
+
   return (
     <>
       {props.visible && (
@@ -79,6 +97,9 @@ const TableWrapper = (props) => {
             label=""
             icon="pi pi-print"
             className="btn-fab fab-1 p-button-raised p-button-rounded"
+            onClick={() => {
+              window.print();
+            }}
           />
           <Button
             label=""
@@ -90,6 +111,7 @@ const TableWrapper = (props) => {
             <Table
               dialogVis={setEditDialogVisible}
               setTarget={setEditing}
+              setViewing={setViewing}
               delete={props.deleteExam}
               editing={editing}
               fetchedData={fetchedData}
@@ -108,6 +130,18 @@ const TableWrapper = (props) => {
               dismissableMask={true}
             >
               {editDialogBody}
+            </Dialog>
+            <Dialog
+              header="Detailansicht"
+              visible={detailViewVisible}
+              footer={<></>}
+              style={{ width: "75vw" }}
+              onHide={() => {
+                setEditDialogVisible(false);
+              }}
+              dismissableMask={true}
+            >
+              {viewExamBody}
             </Dialog>
           </div>
         </div>

@@ -7,8 +7,13 @@
   --toggle-on: #a78000;
   --surface-a: #fffef0;
   --table-header: #ffed9e;
-  --table-even: #fff7d3;
-  --table-odd: #fffcef;
+  --table-even: #fffdf5;
+  --table-odd: #ffffff;
+}
+
+.p-datatable-tbody > tr:nth-child(14n) {
+  page-break-before: always !important;
+  page-break-after: always !important;
 }
 
 .loading-spinner {
@@ -23,6 +28,25 @@
 
 #burgerButton {
   display: none;
+}
+.p-dialog {
+  border: 1px solid var(--main);
+}
+.p-dialog > .p-dialog-header {
+  background-color: #fffef0;
+}
+.p-dialog > .p-dialog-content {
+  background-image: linear-gradient(
+    to bottom,
+    #fffef0,
+    #fcfbeb,
+    #faf8e6,
+    #f7f6e2,
+    #f4f3dd
+  ) !important;
+}
+.p-dialog > .p-dialog-footer {
+  background-color: #f4f3dd;
 }
 
 body {
@@ -124,7 +148,6 @@ input[readonly]:focus {
 }
 
 .exam-table,
-.container-calendar,
 .examForm {
   width: 94%;
   margin-left: 3%;
@@ -147,18 +170,17 @@ input[readonly]:focus {
   color: var(--text);
   margin: 0;
   padding: 0;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 /* Sidebar & Buttons */
 
 .sidebar {
-  min-width: 4.8rem;
-  height: 100vh;
-
-  left: 0;
+  position: absolute;
   top: 0;
-
+  left: 0;
+  width: 5rem;
+  height: 100vh;
   padding: 0.5rem;
   background-image: linear-gradient(
     to bottom,
@@ -169,27 +191,26 @@ input[readonly]:focus {
     #f4f3dd
   );
   border-right: 1px solid var(--main);
-
   box-shadow: 4px 0px 8px transparent;
-
-  transition: min-width 0.2s ease-out, box-shadow 0.2s ease-out;
+  float: left;
+  z-index: 950 !important;
+  transition: width 0.25s ease-in, box-shadow 0.25s ease-in;
 }
 
 .sidebar.active {
-  min-width: 20rem;
+  width: 20rem;
 
   box-shadow: 4px 0px 32px var(--main);
 
-  transition: min-width 0.2s ease-out, box-shadow 0.2s ease-out;
+  transition: width 0.25s ease-out, box-shadow 0.25s ease-out;
 }
 
 .sidebar-header {
   width: 100% !important;
-  height: 7vh;
-  min-height: 36px;
+  height: 66px;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 3px;
-  padding-bottom: 6px;
+  padding: 4px 0px;
 }
 
 .sidebar-header > .logo {
@@ -200,7 +221,7 @@ input[readonly]:focus {
 
 .sidebar-content {
   width: 100% !important;
-  height: 90vh;
+  height: calc(100vh - calc(36px + 48px));
   display: flex;
   flex-flow: column;
   flex-wrap: nowrap;
@@ -224,6 +245,11 @@ input[readonly]:focus {
 
 .sidebar-mid > * {
   margin-bottom: 0.5rem;
+  height: 48px;
+}
+
+.sidebar-mid > * > * {
+  font-size: 1.2rem !important;
 }
 
 .sidebar-bot {
@@ -233,34 +259,46 @@ input[readonly]:focus {
   flex-shrink: 1;
 }
 
+.sidebar-bot > * {
+  height: 48px;
+}
+
 .fc-toolbar-chunk {
   width: 33.333%;
 }
 .fc-direction-ltr .fc-toolbar > * > * {
   margin: 0 !important;
   float: left;
-  height: 6vh;
+  height: 48px;
 }
 .fc-button-group {
-  width: 50%;
-  margin-right: 8px !important;
+  width: 100%;
+  display: block;
+}
+.fc-dayGridMonth-button,
+.fc-timeGridWeek-button,
+.fc-timeGridDay-button {
+  width: 100% !important;
+  display: block !important;
 }
 .fc-button-group button {
-  margin-right: 8px !important;
+  margin: 2px !important;
 }
 .fc-button-group .fc-icon {
   width: 100%;
   font-size: 1.3rem !important;
 }
 .fc-today-button {
-  width: 50%;
+  width: 100%;
   text-align-last: center !important;
   font-size: 1.12rem !important;
+  margin: 2px !important;
 }
 .fc-toolbar-title {
   color: var(--text);
   width: 100%;
   text-align: center;
+  font-size: 120% !important;
 }
 .fc-toolbar-chunk:last-child > .fc-button-group {
   width: 100%;
@@ -272,21 +310,70 @@ input[readonly]:focus {
 .fc-toolbar-chunk:last-child > .fc-button-group > :last-child {
   margin: 0 !important;
 }
+.fc-scrollgrid-section {
+  background-color: var(--table-header);
+}
+.fc-daygrid-body > table {
+  border: 1px solid var(--text) !important;
+}
+.fc-daygrid-body > table > tbody > tr {
+  background-color: white;
+}
+.fc-daygrid-body > table > tbody > tr > td {
+  border: 1px solid var(--text) !important;
+}
+.fc-view-harness > div > table {
+  border: 1px solid var(--main) !important;
+}
+.fc-timegrid-col.fc-day {
+  background-color: white !important;
+}
+.fc-timegrid-axis-cushion {
+  max-width: unset !important;
+}
+
 .container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: -webkit-linear-gradient(
+    to bottom right,
+    #fff0e0,
+    #fff9db
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom right,
+    #fff0e0,
+    #fff9db
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .container-home,
-.container-examform {
+.container-examform,
+.container-calendar {
   height: 100vh;
+  width: calc(100vw - 5rem);
+  position: absolute;
+  top: 0;
+  left: 5rem;
   overflow: auto;
   background: rgba(255, 255, 255, 0.05);
   color: white;
   font-size: 3rem;
+  float: right;
+  z-index: 200 !important;
 }
+.container-calendar {
+  font-size: unset !important;
+}
+.calendar {
+  font-size: 120% !important;
+  color: #3f3000;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 3%;
+  width: 94%;
+}
+
 .container-table {
   flex-grow: 1000;
   overflow: auto;
@@ -380,7 +467,14 @@ td {
   padding: 0.5rem !important;
   padding-bottom: 0.65rem !important;
 }
-
+td.hide-print {
+  width: 100%;
+}
+td.hide-print > * {
+  text-align-last: right;
+  float: right;
+  min-width: 31% !important;
+}
 .p-btn-danger {
   background-color: #dc3545 !important;
 }
@@ -426,6 +520,13 @@ button.active {
 @media print {
   .sidebar {
     display: none !important;
+  }
+
+  .container-home,
+  .container-examform,
+  .container-calendar {
+    top: 0;
+    left: 0;
   }
 
   .floating-card {
@@ -497,8 +598,8 @@ button.active {
     position: absolute !important;
     top: 0 !important;
     left: -100vw !important;
-    width: 100vw;
-    z-index: 15100 !important;
+    width: 100vw !important;
+    z-index: 1100 !important;
     transition: left 0.2s ease-in;
   }
 
@@ -572,7 +673,10 @@ button.active {
     margin-left: 5% !important;
     margin-right: 5% !important;
     margin-top: 5% !important;
+    margin-bottom: 10%;
     width: 90% !important;
+    height: 60% !important;
+    min-height: unset !important;
   }
 
   .loginCard input,

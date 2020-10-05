@@ -47,7 +47,7 @@ const EditExamForm = (props) => {
       />
       <Button
         label="Abbrechen"
-        className="p-button-danger p-mx-"
+        className="p-button-danger"
         icon="pi pi-times"
         onClick={() => {
           props.dialogVis(false);
