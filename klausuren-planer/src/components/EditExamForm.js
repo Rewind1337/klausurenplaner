@@ -22,7 +22,7 @@ const EditExamForm = (props) => {
   const [topic, setTopic] = useState(props.editing.topic);
   const [topicVal, setTopicVal] = useState(false);
 
-  const [description, setDescription] = useState(props.editing.description);
+  const [description, setDescription] = useState(props.editing._description);
 
   const footer = (
     <div className="p-mt-3">
@@ -38,12 +38,10 @@ const EditExamForm = (props) => {
             time,
             description,
             props.editing.id,
-            user
+            props.editing.user
           );
           props.dialogVis(false);
         }}
-        tooltip="Änderungen Speichern"
-        tooltipOptions={{ position: "bottom" }}
       />
       <Button
         label="Abbrechen"
@@ -52,8 +50,6 @@ const EditExamForm = (props) => {
         onClick={() => {
           props.dialogVis(false);
         }}
-        tooltip="Abbrechen"
-        tooltipOptions={{ position: "bottom" }}
       />
     </div>
   );
@@ -124,7 +120,7 @@ const EditExamForm = (props) => {
     setTopic(s);
   };
 
-  const submit = (classgrade, topic, date, time, description) => {
+  const submit = (classgrade, topic, date, time, description, id, user) => {
     let iso = date.toISOString();
     let exam = {
       classgrade: classgrade,
@@ -141,17 +137,9 @@ const EditExamForm = (props) => {
         ":" +
         time.substring(3, 5) +
         ":00",
+      id: id,
+      user: user,
     };
-
-    if (
-      localStorage.getItem("user") != null ||
-      localStorage.getItem("user" != "")
-    ) {
-      exam.user = JSON.parse(localStorage.getItem("user"));
-    } else {
-      props.tError("Fehler beim Ändern!");
-      return false;
-    }
 
     const options = {
       method: "POST",
@@ -159,10 +147,11 @@ const EditExamForm = (props) => {
       body: JSON.stringify(exam),
     };
 
-    fetch(props.api_link + "/exams/add", options)
+    fetch(props.api_link + "/exams/update", options)
       .then((response) => response.json())
       .then(() => {
         props.tSuccess("Erfolgreich geändert!");
+        props.reFetch();
       })
       .catch(() => {
         props.tError("Fehler beim Ändern!");

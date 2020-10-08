@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import "../css/global.css";
 
-import FullCalendar, { formatDate } from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -14,28 +14,10 @@ import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 
 const CalendarWrapper = (props) => {
-  let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
+  const [parsedEvents, setParsedEvents] = useState();
 
-  const [fetchedData, setFetchedData] = useState([
-    { title: "The Title", start: "2018-09-01" },
-  ]);
-
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    fetchAllExams();
-  }, []);
-
-  const formatDate = (dateString) => {
-    let year = dateString.substring(0, 4) + " | ";
-    let month = dateString.substring(5, 7) + ". ";
-    let day = dateString.substring(8, 10) + ". ";
-    let hours = dateString.substring(11, 13) + ":";
-    let minutes = dateString.substring(14, 16) + " Uhr";
-
-    let formattedDateString = day + month + year + hours + minutes;
-    return formattedDateString;
-  };
+  const [detailViewVisible, setDetailViewVisible] = useState(false);
+  const [viewing, setViewing] = useState("");
 
   const fetchAllExams = () => {
     const options = {
@@ -53,17 +35,50 @@ const CalendarWrapper = (props) => {
 
           for (let j = 0; j < data.length; j++) {
             parsedData[j] = data[j];
-            parsedData[j].date = formatDate(data[j].date);
+            parsedData[j].date = data[j].date;
             parsedData[j].teacher =
               data[j].user.firstname + " " + data[j].user.lastname;
+            parsedData[j].description =
+              data[j].description.length > 28
+                ? data[j].description.substring(0, 30) + "..."
+                : data[j].description;
           }
         } else {
           parsedData = data;
-          parsedData.date = formatDate(parsedData.date);
+          parsedData.date = parsedData.date;
           parsedData.teacher = data.user.firstname + " " + data.user.lastname;
+          parsedData.description =
+            data.description.length > 28
+              ? data.description.substring(0, 30) + "..."
+              : data.description;
         }
-        setFetchedData(parsedData);
+        let eventData = parsedData.map((e) => {
+          return { start: e.date, title: e.topic };
+        });
+        setParsedEvents(eventData);
+        console.log(eventData);
+        console.log(parsedEvents);
       });
+  };
+
+  useEffect(() => {
+    fetchAllExams();
+  }, []);
+
+  const eventClick = (info) => {
+    let viewing = {};
+    alert("Event: " + info.event.title);
+  };
+
+  const formatDate = (dateString) => {
+    let year = dateString.substring(0, 4) + " | ";
+    let month = dateString.substring(5, 7) + ". ";
+    let day = dateString.substring(8, 10) + ". ";
+    let hours = dateString.substring(11, 13) + ":";
+    let minutes = dateString.substring(14, 16) + " Uhr";
+
+    let formattedDateString = day + month + year + hours + minutes;
+    return formattedDateString;
   };
 
   return (
@@ -79,7 +94,7 @@ const CalendarWrapper = (props) => {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
               }}
-              events={fetchedData}
+              events={parsedEvents}
               initialView="dayGridMonth"
               editable={true}
               selectable={true}
@@ -87,6 +102,7 @@ const CalendarWrapper = (props) => {
               dayMaxEvents={true}
               weekends={false}
               locale={deLocale}
+              eventClick={eventClick}
             />
           </div>
         </div>

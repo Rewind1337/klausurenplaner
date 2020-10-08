@@ -41,9 +41,18 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [loggedInUser, setLoggedInUser] = useState("");
+  const [darkTheme, setDarkTheme] = useState(false);
 
   const api_link = "http://localhost:8080";
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const switchTheme = () => {
+    if (darkTheme) setDarkTheme(false);
+    else setDarkTheme(true);
+
+    if (darkTheme) document.getRootNode().children[0].className = "dark-theme";
+    else document.getRootNode().children[0].className = "";
+  };
 
   const tryLogin = (username, password) => {
     setIsFetching(true);
@@ -307,6 +316,12 @@ const App = () => {
                     />
                   </>
                 )}
+                <SidebarButton
+                  expand={sidebarExpanded}
+                  f={switchTheme}
+                  label="Light/Dark Theme"
+                  icon="pi pi-palette"
+                />
               </div>
               <div className="sidebar-bot">
                 <SidebarButton

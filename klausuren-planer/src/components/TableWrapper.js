@@ -39,6 +39,7 @@ const TableWrapper = (props) => {
     fetch(props.api_link + "/exams", options)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         let parsedData;
         if (Array.isArray(data)) {
           parsedData = [];
@@ -50,6 +51,7 @@ const TableWrapper = (props) => {
             parsedData[j].date = formatDate(data[j].date);
             parsedData[j].teacher =
               data[j].user.firstname + " " + data[j].user.lastname;
+            parsedData[j]._description = data[j].description;
             parsedData[j].description =
               data[j].description.length > 28
                 ? data[j].description.substring(0, 30) + "..."
@@ -59,11 +61,13 @@ const TableWrapper = (props) => {
           parsedData = data;
           parsedData.date = formatDate(parsedData.date);
           parsedData.teacher = data.user.firstname + " " + data.user.lastname;
+          parsedData._description = data.description;
           parsedData.description =
             data.description.length > 28
               ? data.description.substring(0, 30) + "..."
               : data.description;
         }
+        console.log(parsedData);
         setFetchedData(parsedData);
       });
   };
@@ -76,6 +80,9 @@ const TableWrapper = (props) => {
       delete={props.deleteExam}
       dialogVis={setEditDialogVisible}
       api_link={props.api_link}
+      tError={props.tError}
+      tSuccess={props.tSuccess}
+      reFetch={fetchAllExams}
     ></EditExamForm>
   );
 
@@ -109,7 +116,8 @@ const TableWrapper = (props) => {
           <div className="floating-card exam-table">
             <div className="card-header">Anstehende Arbeiten</div>
             <Table
-              dialogVis={setEditDialogVisible}
+              dialogVisEdit={setEditDialogVisible}
+              dialogVisView={setDetailViewVisible}
               setTarget={setEditing}
               setViewing={setViewing}
               delete={props.deleteExam}
@@ -135,9 +143,9 @@ const TableWrapper = (props) => {
               header="Detailansicht"
               visible={detailViewVisible}
               footer={<></>}
-              style={{ width: "75vw" }}
+              style={{ width: "50vw" }}
               onHide={() => {
-                setEditDialogVisible(false);
+                setDetailViewVisible(false);
               }}
               dismissableMask={true}
             >

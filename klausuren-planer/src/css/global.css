@@ -10,10 +10,43 @@
   --table-even: #fffdf5;
   --table-odd: #ffffff;
 }
+html {
+  transition: filter 0.2s ease-in-out;
+}
+html.dark-theme {
+  background-color: #fefefe;
+  color: black;
+  filter: invert(100%);
+}
+
+img:not([src*=".svg"]),
+video {
+  filter: invert(100%);
+}
 
 .p-datatable-tbody > tr:nth-child(14n) {
   page-break-before: always !important;
   page-break-after: always !important;
+}
+
+.dv-label {
+  position: relative;
+  left: -200px;
+  top: 20px;
+}
+
+.dv-text {
+  font-size: 1.2rem;
+}
+
+.dv-button {
+  position: relative;
+  top: 25px;
+}
+
+.dv-description {
+  position: relative;
+  top: 25px;
 }
 
 .loading-spinner {
@@ -28,25 +61,6 @@
 
 #burgerButton {
   display: none;
-}
-.p-dialog {
-  border: 1px solid var(--main);
-}
-.p-dialog > .p-dialog-header {
-  background-color: #fffef0;
-}
-.p-dialog > .p-dialog-content {
-  background-image: linear-gradient(
-    to bottom,
-    #fffef0,
-    #fcfbeb,
-    #faf8e6,
-    #f7f6e2,
-    #f4f3dd
-  ) !important;
-}
-.p-dialog > .p-dialog-footer {
-  background-color: #f4f3dd;
 }
 
 body {
@@ -517,6 +531,26 @@ button.active {
 .p-paginator {
   background-color: var(--table-header);
 }
+
+.p-dialog {
+  border: 1px solid var(--main);
+}
+.p-dialog > .p-dialog-header {
+  background-color: #fffef0;
+}
+.p-dialog > .p-dialog-content {
+  background-image: linear-gradient(
+    to bottom,
+    #fffef0,
+    #fcfbeb,
+    #faf8e6,
+    #f7f6e2,
+    #f4f3dd
+  ) !important;
+}
+.p-dialog > .p-dialog-footer {
+  background-color: #f4f3dd !important;
+}
 @media print {
   .sidebar {
     display: none !important;
@@ -617,7 +651,7 @@ button.active {
   }
 
   .sidebar-mid > .p-button {
-    height: calc(80% / 5);
+    height: calc(80% / 6);
   }
 
   #burgerButton {

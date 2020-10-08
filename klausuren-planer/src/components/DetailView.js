@@ -3,41 +3,35 @@ import React, { useState, useEffect } from "react";
 import "../css/global.css";
 
 import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Dropdown } from "primereact/dropdown";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const DetailView = (props) => {
   const [teacher, setTeacher] = useState(props.viewing.teacher);
-  const [teacherSelectItems, setTeacherSelectItems] = useState([]);
-
-  const [userInfo, setUserInfo] = useState(props.viewing.user);
-  const [user, setUser] = useState(props.viewing.user.id);
-
-  const [classgrade, setClassgrade] = useState(props.viewing.classgrade);
-  const [classgradeVal, setClassgradeVal] = useState(false);
-
   const [topic, setTopic] = useState(props.viewing.topic);
-  const [topicVal, setTopicVal] = useState(false);
-
-  const [description, setDescription] = useState(props.viewing.description);
+  const [description, setDescription] = useState(props.viewing._description);
 
   const footer = (
     <div className="p-mt-3">
       <Button
         label="Schließen"
-        className="p-button-primary"
+        className="p-button-primary dv-button"
         icon="pi pi-times"
         onClick={() => {
           props.dialogVis(false);
         }}
-        tooltip="Abbrechen"
-        tooltipOptions={{ position: "bottom" }}
       />
     </div>
   );
+
+  const formatDate = (dateString) => {
+    let day = dateString.substring(8, 10) + ". ";
+    let month = dateString.substring(5, 7) + ". ";
+    let year = dateString.substring(0, 4) + " | ";
+    let hours = parseInt(dateString.substring(11, 13)) + 2 + ":";
+    let minutes = dateString.substring(14, 16) + " Uhr";
+
+    let formattedDateString = day + month + year + hours + minutes;
+    return formattedDateString;
+  };
 
   var _date =
     props.viewing.date.substring(8, 12) +
@@ -51,20 +45,33 @@ const DetailView = (props) => {
     props.viewing.date.substring(18, 20) +
     ":00";
 
-  _date = new Date(_date);
-
   const [date, setDate] = useState(new Date(_date));
-  const [time, setTime] = useState(
-    props.viewing.date.substring(15, 17) +
-      ":" +
-      props.viewing.date.substring(18, 20)
+  const [readableDate, setReadableDate] = useState(
+    formatDate(date.toISOString())
   );
 
   return (
     <>
       {props.visible && (
         <>
-          <div className="p-grid w-100"></div>
+          <div className="p-grid w-100">
+            <div className="p-col-12 p-text-left">
+              <div className="dv-label">Zeitpunkt</div>
+              <div className="dv-text dv-date">{readableDate}</div>
+            </div>
+            <div className="p-col-12 p-text-left">
+              <div className="dv-label">Fach</div>
+              <div className="dv-text dv-topic">{topic}</div>
+            </div>
+            <div className="p-col-12 p-text-left">
+              <div className="dv-label">Lehrkraft</div>
+              <div className="dv-text dv-teacher">{teacher}</div>
+            </div>
+            <div className="p-col-12 p-text-left">
+              <div className="dv-label">Beschreibung</div>
+              <div className="dv-text dv-description">{description}</div>
+            </div>
+          </div>
           {footer}
         </>
       )}

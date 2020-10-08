@@ -99,6 +99,8 @@ const Table = (props) => {
           onClick={() => {
             rowColumnView(rowData);
           }}
+          tooltip="Details"
+          tooltipOptions={{ position: "bottom" }}
         />
         <Button
           className="p-button-primary p-mx-1 mobile-w-100"
@@ -107,6 +109,8 @@ const Table = (props) => {
           onClick={() => {
             rowColumnEdit(rowData);
           }}
+          tooltip="Bearbeiten"
+          tooltipOptions={{ position: "bottom" }}
         />
         {props.isAdmin && (
           <Button
@@ -116,6 +120,8 @@ const Table = (props) => {
             onClick={() => {
               rowColumnDelete(rowData);
             }}
+            tooltip="Archivieren"
+            tooltipOptions={{ position: "bottom" }}
           />
         )}
       </>
@@ -123,7 +129,7 @@ const Table = (props) => {
   };
 
   const rowColumnEdit = (rowData, column) => {
-    props.dialogVis(true);
+    props.dialogVisEdit(true);
     props.setTarget(rowData);
     setUpdate(!update);
     props.reFetch();
@@ -137,6 +143,8 @@ const Table = (props) => {
   };
 
   const rowColumnView = (rowData, column) => {
+    props.dialogVisView(true);
+    console.log(rowData._description);
     props.setViewing(rowData);
     setUpdate(!update);
   };
